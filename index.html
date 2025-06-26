@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SliderZ – Play with AI</title>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: #000;
+      --accent-pink: #ee75d3;
+      --accent-purple: #eac4ff;
+      --accent-blue: #0294e4;
+      --button-bg: #0091e4;
+      --button-text: #000;
+      --font-main: 'Poppins', Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-main);
+      background: var(--primary-bg);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-container {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .left {
+      flex: none;
+    }
+    .right {
+      flex: 1;
+      max-width: 500px;
+    }
+    .character-img {
+      width: 400px;
+      margin: 0;
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 0;
+      box-shadow: none;
+      background: #111;
+      object-fit: cover;
+    }
+    .logo {
+      font-size: 4rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: left;
+      margin-bottom: 0;
+    }
+    .tagline {
+      font-size: 1.5rem;
+      color: var(--accent-purple);
+      text-align: left;
+      margin-bottom: 1.5rem;
+      margin-top: -25px;
+      font-weight: 500;
+    }
+    .description {
+      font-size: 1.25rem;
+      color: var(--accent-pink);
+      text-align: left;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+    .cta-text {
+      font-size: 1.1rem;
+      color: #e450f2;
+      text-align: left;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .cta-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: stretch;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .cta-form input[type="email"],
+    .cta-form button {
+      box-sizing: border-box;
+    }
+    .cta-form input[type="email"] {
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--accent-blue);
+      border-radius: 5px;
+      font-size: 1rem;
+      width: 320px;
+      outline: none;
+      transition: border 0.2s;
+      font-family: var(--font-main);
+      background: #181818;
+      color: #fff;
+    }
+    .cta-form input[type="email"]:focus {
+      border: 2px solid var(--accent-blue);
+    }
+    .cta-form button {
+      background: var(--button-bg);
+      color: var(--button-text);
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 5px;
+      padding: 0.75rem 2rem;
+      width: 320px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      font-family: var(--font-main);
+    }
+    .cta-form button:hover {
+      background: #00b4ff;
+      transform: translateY(-2px) scale(1.03);
+    }
+    .success-message {
+      background: #181818;
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      margin-top: 1rem;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(234, 196, 255, 0.12);
+      text-align: center;
+      font-size: 1.1rem;
+      animation: fadeIn 0.5s;
+    }
+    .success-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--accent-purple);
+      margin-bottom: 0.5rem;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+    .email-error {
+      color: #e11d48;
+      font-size: 0.98rem;
+      margin-top: 0.25rem;
+      text-align: left;
+      min-height: 18px;
+    }
+    @media (max-width: 900px) {
+      .main-container {
+        flex-direction: column;
+        gap: 24px;
+        padding: 24px 8px;
+      }
+      .right {
+        align-items: flex-start;
+        max-width: 100vw;
+        margin-left: 0;
+        width: 300px;
+        margin: 0 auto;
+      }
+      .logo {
+        margin-bottom: 0;
+      }
+      .tagline {
+        margin-top: 0;
+      }
+      .logo, .tagline, .description, .cta-text, .form-note {
+        text-align: left;
+      }
+      .cta-form {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.75rem;
+      }
+      .cta-form input[type="email"],
+      .cta-form button {
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+    @media (max-width: 600px) {
+      .main-container {
+        padding: 8px 2px;
+        gap: 12px;
+      }
+      .logo {
+        margin-bottom: 0;
+      }
+      .tagline {
+        margin-top: 0;
+      }
+      .left {
+        padding-left: 0;
+      }
+      .right {
+        padding-left: 0;
+        margin-left: 0;
+      }
+      .logo {
+        font-size: 2.2rem;
+      }
+      .tagline {
+        font-size: 1.1rem;
+      }
+      .character-img {
+        width: 90vw;
+        max-width: 300px;
+      }
+      .right {
+        gap: 12px;
+      }
+      .description {
+        font-size: 1rem;
+      }
+      .cta-form button {
+        font-size: 1rem;
+        padding: 0.6rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="left">
+      <!-- Replace 'character.png' with your exported character image -->
+      <img src="character.png" alt="SliderZ Character" class="character-img" />
+    </div>
+    <div class="right">
+      <div class="logo">SliderZ</div>
+      <div class="tagline">Play with AI</div>
+      <div class="description">
+        We're building a platform where anyone can create, share, and remix fun gamified experiences.
+      </div>
+      <div class="cta-text">Want to be part of the first wave? Join our creator beta.</div>
+      <form class="cta-form" id="betaForm" action="#" method="POST" onsubmit="return handleBetaSubmit(event);">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Join the Beta</button>
+      </form>
+      <div id="emailError" class="email-error" style="display:none;"></div>
+      <div id="successMessage" class="success-message" style="display:none;">
+        <div class="success-title">You're in! 🎉</div>
+        <div class="success-body">Thanks for signing up for the SliderZ beta.<br>We'll be in touch soon.</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+    function handleBetaSubmit(event) {
+      event.preventDefault();
+      var form = document.getElementById('betaForm');
+      var success = document.getElementById('successMessage');
+      var emailInput = form.querySelector('input[type="email"]');
+      var emailError = document.getElementById('emailError');
+      var email = emailInput.value.trim();
+      if (!validateEmail(email)) {
+        emailError.textContent = 'Please enter a valid email address.';
+        emailError.style.display = 'block';
+        emailInput.focus();
+        return false;
+      } else {
+        emailError.textContent = '';
+        emailError.style.display = 'none';
+      }
+      form.style.display = 'none';
+      success.style.display = 'block';
+      return false;
+    }
+  </script>
+</body>
+</html> 
