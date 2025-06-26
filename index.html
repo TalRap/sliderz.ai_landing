@@ -222,9 +222,50 @@
         padding: 0.6rem 1.2rem;
       }
     }
+    .instagram-icon {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(24, 24, 24, 0.92);
+      box-shadow: 0 2px 8px rgba(234, 196, 255, 0.10);
+      transition: box-shadow 0.2s, background 0.2s;
+      text-decoration: none;
+    }
+    .instagram-icon:hover {
+      box-shadow: 0 4px 16px rgba(234, 196, 255, 0.18);
+      background: #222;
+    }
+    .instagram-icon svg {
+      display: block;
+    }
+    @media (max-width: 600px) {
+      .instagram-icon {
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+      }
+      .instagram-icon svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="https://www.instagram.com/sliderz.ai?igsh=cWQ4ZjFjMDZ3d2Qx&utm_source=qr" target="_blank" rel="noopener noreferrer" class="instagram-icon" aria-label="Instagram">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="8" fill="#181818"/>
+      <path d="M21.333 10.667a2.667 2.667 0 0 1 2.667 2.666v6.334a2.667 2.667 0 0 1-2.667 2.666h-10.666A2.667 2.667 0 0 1 8 19.667v-6.334a2.667 2.667 0 0 1 2.667-2.666h10.666zm-5.333 2.666a3.333 3.333 0 1 0 0 6.667 3.333 3.333 0 0 0 0-6.667zm0 1.334a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm4.167-.834a.667.667 0 1 0 0 1.334.667.667 0 0 0 0-1.334z" fill="#ee75d3"/>
+    </svg>
+  </a>
   <div class="main-container">
     <div class="left">
       <!-- Replace 'character.png' with your exported character image -->
@@ -248,17 +289,25 @@
       </div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    // Supabase credentials
+    const SUPABASE_URL = 'https://xdvptnhljxiwhvxilrex.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkdnB0bmhsanhpd2h2eGlscmV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA5Mjc3ODAsImV4cCI6MjA2NjUwMzc4MH0.9F85DdrVZm7UuLsFEcQZJGNOOrwI1K2_bUf-n7NcPDw';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     function validateEmail(email) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
-    function handleBetaSubmit(event) {
+
+    async function handleBetaSubmit(event) {
       event.preventDefault();
       var form = document.getElementById('betaForm');
       var success = document.getElementById('successMessage');
       var emailInput = form.querySelector('input[type="email"]');
       var emailError = document.getElementById('emailError');
       var email = emailInput.value.trim();
+
       if (!validateEmail(email)) {
         emailError.textContent = 'Please enter a valid email address.';
         emailError.style.display = 'block';
@@ -268,6 +317,22 @@
         emailError.textContent = '';
         emailError.style.display = 'none';
       }
+
+      // Insert email into Supabase
+      const { error } = await supabase
+        .from('beta_signups')
+        .insert([{ email }]);
+
+      if (error) {
+        if (error.code === '23505' || (error.message && error.message.includes('duplicate'))) {
+          emailError.textContent = 'This email is already signed up!';
+        } else {
+          emailError.textContent = 'Something went wrong. Please try again.';
+        }
+        emailError.style.display = 'block';
+        return false;
+      }
+
       form.style.display = 'none';
       success.style.display = 'block';
       return false;
